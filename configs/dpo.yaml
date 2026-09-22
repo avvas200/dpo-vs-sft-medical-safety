@@ -1,0 +1,57 @@
+# DPO training configuration — matches PLAN.md §5.2.
+# BYTE-IDENTICAL to configs/sft.yaml except for the fields marked
+# "OBJECTIVE-SPECIFIC" (learning rate, DPO beta, and the loss type).
+# LOCKED under pre-registration. See PLAN.md §10.
+
+base_model:
+  name: meta-llama/Llama-3.2-3B-Instruct
+  fallback: Qwen/Qwen2.5-3B-Instruct
+
+quantization:
+  load_in_4bit: true
+  bnb_4bit_quant_type: nf4
+  bnb_4bit_use_double_quant: true
+  bnb_4bit_compute_dtype: bfloat16
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+  bias: none
+  task_type: CAUSAL_LM
+
+training:
+  epochs: 2
+  micro_batch_size: 4
+  gradient_accumulation_steps: 8
+  max_seq_length: 1024
+  learning_rate: 5.0e-6         # OBJECTIVE-SPECIFIC (TRL DPO default)
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.03
+  weight_decay: 0.0
+  max_grad_norm: 1.0
+  optim: paged_adamw_8bit
+  bf16: true
+  logging_steps: 25
+  save_strategy: epoch
+  save_total_limit: 1
+  gradient_checkpointing: true
+  report_to: none
+
+dpo:
+  beta: 0.1                     # OBJECTIVE-SPECIFIC (TRL DPO default)
+  loss_type: sigmoid            # OBJECTIVE-SPECIFIC (standard DPO loss)
+  max_prompt_length: 512
+
+data:
+  adaptation_ids_path: data/adaptation_ids.json  # frozen 4,000-example sample
+  medmcqa_split: train
+  preference_generation:
+    # Preference-pair construction — see PLAN.md §4.2.
+    # Chosen = ground-truth explanation.
+    # Rejected = base-model generation, verified incorrect against ground-truth key;
+    #            if base model correct, generate distractor conditioned on wrong-answer letter.
+    generation_temperature: 0.7
+    generation_max_new_tokens: 256
+    generation_top_p: 0.95

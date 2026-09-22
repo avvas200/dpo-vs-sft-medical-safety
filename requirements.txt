@@ -1,0 +1,22 @@
+# Core LLM stack (Colab Pro will already have torch)
+transformers>=4.44.0,<5.0.0
+trl>=0.11.0,<0.15.0
+peft>=0.13.0,<0.16.0
+bitsandbytes>=0.44.0
+accelerate>=0.34.0
+datasets>=2.20.0
+sentencepiece
+tokenizers
+
+# Analysis
+numpy>=1.26.0
+scipy>=1.13.0
+pandas>=2.2.0
+matplotlib>=3.9.0
+
+# Utilities
+pyyaml>=6.0
+tqdm
+
+# Testing (dev only)
+pytest>=8.0.0

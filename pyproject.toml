@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dpo-vs-sft-medical-safety"
+version = "0.1.0"
+description = "Pre-registered empirical study on DPO vs SFT safety preservation in medical LLMs"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "Abbas Sani"}]
+license = {text = "MIT"}
+dependencies = [
+    "numpy>=1.26.0",
+    "scipy>=1.13.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# Heavy ML deps only needed for the training/eval pipeline on Colab,
+# not for local testing of src/stats.py.
+ml = [
+    "torch>=2.4.0",
+    "transformers>=4.44.0,<5.0.0",
+    "trl>=0.11.0,<0.15.0",
+    "peft>=0.13.0,<0.16.0",
+    "bitsandbytes>=0.44.0",
+    "accelerate>=0.34.0",
+    "datasets>=2.20.0",
+    "sentencepiece",
+    "tokenizers",
+]
+analysis = [
+    "pandas>=2.2.0",
+    "matplotlib>=3.9.0",
+    "tqdm",
+]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+# Explicitly add the repo root so `from src import stats` works whether or
+# not the project is pip-installed in editable mode.
+pythonpath = ["."]
+testpaths = ["tests"]

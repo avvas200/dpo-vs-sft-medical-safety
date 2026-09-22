@@ -1,0 +1,41 @@
+# Model checkpoints — these live in Google Drive, not the repo.
+checkpoints/
+*.safetensors
+*.bin
+*.pt
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+
+# Notebook cruft
+.ipynb_checkpoints/
+
+# Environment
+.env
+venv/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Colab
+sample_data/
+
+# Local logs
+*.log
+wandb/
+
+# Everything in results/ except the .gitkeep and the small analysis outputs.
+# JSONL model outputs can be large; keep them locally but track their manifests.
+results/*
+!results/.gitkeep
+!results/README.md
+
+# Figures — track final PDFs/PNGs, ignore intermediate .pkl
+figures/*.pkl

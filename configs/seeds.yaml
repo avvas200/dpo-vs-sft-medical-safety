@@ -1,0 +1,25 @@
+# All randomness in this study is seeded from this file.
+# DO NOT change any of these values after the pre-registration lock date
+# (see PLAN.md §10). A change here invalidates the pre-registration.
+
+# Adaptation seeds — one training run per (condition, seed).
+# 3 seeds × 2 conditions (SFT, DPO) = 6 runs.
+training_seeds: [42, 1337, 20260922]
+
+# Sampling seed for the frozen adaptation subset (data/adaptation_ids.json).
+adaptation_subset_seed: 20260922
+
+# Sampling seed for safety benchmark prompt selection (200 general + 200 medical).
+safety_prompt_seed: 20260922
+
+# Sampling seed for held-out KL evaluation set (100 medical + 100 general).
+kl_holdout_seed: 20260922
+
+# Bootstrap seed (must match src/stats.py::BOOTSTRAP_SEED).
+bootstrap_seed: 20260922
+
+# Sampling seed used at generation time in safety eval (temperature 0.7).
+generation_seed: 20260922
+
+# Sampling seed for discordant-example qualitative coding (30 samples).
+discordant_sample_seed: 20260922
